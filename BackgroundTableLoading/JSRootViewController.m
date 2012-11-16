@@ -127,7 +127,7 @@ static NSInteger kNumberOfItems = 100;
     dispatch_async(backgroundQueue, ^{
         // Call the "Loading Method".
         
-        // !!!NOTE: This could be where you would start the call to Parse.  However, just as note, Parse may already handle or execute everything on the background thread already.  You may need to check on that because it would be silly to do a background within a background.  Also, with Parse they would probably provide a completion method with their API so you would handle all the finishing up in that method rather than calling it like I am below.
+        // !!!NOTE: This could be where you would start the call to your custom network API or whatnot (E.g. Parse, Kumulos, etc).  However, just as note, those services may already have a way to handle or execute everything on the background thread.  You should check because it would be silly to do a background within a background.  Also, with most of those services they probably provide a custom completion method you would wait to be called through their API so you should handle all the finishing up in that method rather than calling it like I am below.
         [self loadingMethod];
         
         // The method has finished so call a completion method

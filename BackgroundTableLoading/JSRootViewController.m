@@ -29,19 +29,13 @@ static NSInteger kNumberOfItems = 100;
 
 @implementation JSRootViewController
 
-- (id)initWithStyle:(UITableViewStyle)iStyle {
-    self = [super initWithStyle:iStyle];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     // Setup UI Stuff
     self.title = @"Background Items";
+    
+    // NOTE: I setup two ways to addBackgroundItems.  With a button on the navbar and the newly added iOS 6 UIRefreshControl (pull down on the uitableview to see it work).
     
     // Setup Reload Button
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(startBackgroundLoadingWithQueues)];
@@ -55,6 +49,7 @@ static NSInteger kNumberOfItems = 100;
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    // NOTE: You would get faster response if you put this in the viewDidLoad.  I put it here so you can actually see the 'loading cell' for a bit.
     // Start background loading
     [self startBackgroundLoadingWithQueues];
 }
@@ -122,8 +117,8 @@ static NSInteger kNumberOfItems = 100;
     // Log Progress
     WhereAmI;
     
-    // This method shows how to background load using custom queues
-    // The first step to start something in the background is to create a 'queue' that you are going to assign a 'block' to that you will dispatch_async. By dispatcaching asynchronously you are sending it to be executing in the background without 'blocking' the current thread you are on.  You can also dispatch_sync which would dispatch it on the current thread and block it.
+    //NOTE: This method shows how to background load using custom queues
+    //NOTE: The first step to start something in the background is to create a 'queue' that you are going to assign a 'block' to that you will dispatch_async. By dispatcaching asynchronously you are sending it to be executing in the background without 'blocking' the current thread you are on.  You can also dispatch_sync which would dispatch it on the current thread and block it.
     
     // Create a 'queue'
     dispatch_queue_t backgroundQueue = dispatch_queue_create("aBackgroundLoadingQueue", NULL);
@@ -144,7 +139,7 @@ static NSInteger kNumberOfItems = 100;
     // Log Progress
     WhereAmI;
     
-    // Temp 'loading method'.  You would replace this with whatever you would call to do the loading you needed done.
+    // NOTE: Temp 'loading method'.  You would replace this with whatever you would call to do the loading you needed done.
     for (int i = 0; i < kNumberOfItems; i++) {
         NSLog(@"Adding Object #%d",i);
         // Add a temp object
@@ -159,12 +154,12 @@ static NSInteger kNumberOfItems = 100;
     // Log Progress
     WhereAmI;    
     
-    // Do stuff that you would need done after the data has been loaded.
+    //NOTE: This could be where you woul do stuff that you would need done after the data has been loaded. E.g. Updating any UI elemtns
+
     
-    // E.g. Updating the UI
-    // IMPORTANT NOTE:
-    // You need to remember that anything having to do with any sort of GUI or object that starts with UI needs to be done on the main thread.  For our example we want to reload the tableView's datasource.  To do this, we execute it on the 'main thread' as such:
-    // dispatch_get_main_queue() returns the main thread, it's nifty.
+    // IMPORTANT NOTE: You need to remember that anything having to do with any sort of GUI or object that starts with UI needs to be done on the main thread.  For our example we want to reload the tableView's datasource.  To do this, we execute it on the 'main thread' as such:
+    
+    // NOTE: dispatch_get_main_queue() returns the main thread, it's nifty.
     dispatch_async(dispatch_get_main_queue(), ^{
         // Do whatever UI stuff you need done.
         [self.tableView reloadData];
